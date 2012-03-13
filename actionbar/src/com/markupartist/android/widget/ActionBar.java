@@ -20,8 +20,10 @@ import java.util.LinkedList;
 
 import com.markupartist.android.widget.actionbar.R;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -74,6 +76,11 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
             setTitle(title);
         }
         a.recycle();
+    }
+    
+    public void setHomeIcon(int drawable) {
+    	mHomeBtn.setImageResource(drawable);
+    	mHomeLayout.setVisibility(VISIBLE);
     }
 
     public void setHomeAction(Action action) {
@@ -233,9 +240,20 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
     private View inflateAction(Action action) {
         View view = mInflater.inflate(R.layout.actionbar_item, mActionsView, false);
 
-        ImageButton labelView =
-            (ImageButton) view.findViewById(R.id.actionbar_item);
-        labelView.setImageResource(action.getDrawable());
+        ImageView labelView =
+            (ImageView) view.findViewById(R.id.actionbar_item_icon);
+        if (action.getDrawable() == 0) {
+        	labelView.setVisibility(GONE);
+        } else {
+        	labelView.setImageResource(action.getDrawable());
+        }
+        
+    	TextView textView = (TextView) view.findViewById(R.id.actionbar_item_text);
+        if (action.getText() != null) {
+        	textView.setText(action.getText());
+        } else {
+        	textView.setVisibility(GONE);
+        }
 
         view.setTag(action);
         view.setOnClickListener(this);
@@ -254,20 +272,33 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
      */
     public interface Action {
         public int getDrawable();
+        public CharSequence getText();
         public void performAction(View view);
     }
 
     public static abstract class AbstractAction implements Action {
         final private int mDrawable;
-
+        final private CharSequence mText;
+        
         public AbstractAction(int drawable) {
             mDrawable = drawable;
+            mText = null;
+        }
+
+        public AbstractAction(int drawable, CharSequence text) {
+            mDrawable = drawable;
+            mText = text;
         }
 
         @Override
         public int getDrawable() {
             return mDrawable;
         }
+
+		@Override
+		public CharSequence getText() {
+			return mText;
+		}
     }
 
     public static class IntentAction extends AbstractAction {
@@ -276,6 +307,18 @@ public class ActionBar extends RelativeLayout implements OnClickListener {
 
         public IntentAction(Context context, Intent intent, int drawable) {
             super(drawable);
+            mContext = context;
+            mIntent = intent;
+        }
+
+        public IntentAction(Context context, Intent intent, int drawable, int text) {
+            super(drawable);
+            mContext = context;
+            mIntent = intent;
+        }
+
+        public IntentAction(Context context, Intent intent, int drawable, CharSequence text) {
+            super(drawable, text);
             mContext = context;
             mIntent = intent;
         }

@@ -13,11 +13,28 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:id="@+id/actionbar_item"
-    style="@style/ActionBarItem"
-    android:background="@drawable/actionbar_btn"
-    android:layout_centerVertical="true"
-    android:singleLine="true"
-    android:visibility="visible"
-    />
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/actionbar_item_height"
+ 	android:background="@drawable/actionbar_btn" 
+ 	style="@style/ActionBarItem" >
+    
+	<ImageView
+	    android:id="@+id/actionbar_item_icon"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentLeft="true"
+	    android:singleLine="true"
+	    android:visibility="visible"
+    	style="@style/ActionBarItem"/>
+	
+	<TextView android:id="@+id/actionbar_item_text"
+	    android:layout_alignWithParentIfMissing="true"
+	    android:layout_toRightOf="@id/actionbar_item_icon"
+	    android:layout_alignBaseline="@id/actionbar_item_icon"
+	    android:singleLine="true"
+	    android:visibility="visible" 
+    	style="@style/ActionBarItem"/>
+
+</RelativeLayout>

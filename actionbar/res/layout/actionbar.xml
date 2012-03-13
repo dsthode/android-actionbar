@@ -92,7 +92,7 @@
                 android:layout_centerVertical="true"
                 android:paddingRight="7dip"
                 android:indeterminateOnly="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 style="@style/ActionBarProgressBar"
                 />
             <com.markupartist.android.widget.ScrollingTextView
@@ -103,7 +103,7 @@
                 android:layout_toLeftOf="@id/actionbar_progress"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:textSize="16dip"
+                android:textSize="20dip"
                 android:textStyle="bold"
                 android:textColor="@color/actionbar_title"
                 android:lines="1"
